@@ -4,7 +4,7 @@ This demo automatically deploys the topology of services as defined in the [Debe
 
 - [PostgreSQL Debezium Example](#postgresql-debezium-example)
   - [Environment](#environment)
-  - [Using Postgres](#using-postgres)
+  - [Start](#start)
   - [Debugging](#debugging)
 
 ## Environment
@@ -12,12 +12,12 @@ This demo automatically deploys the topology of services as defined in the [Debe
 | name           | version                |
 | -------------- | ---------------------- |
 | Docker Compose | 3.9                    |
-| MySQL          | postgres:13.9          |
+| PostgreSQL     | postgres:13.9          |
 | kafka          | debezium/kafka:2.0     |
 | zookeeper      | debezium/zookeeper:2.0 |
 | debezium       | debezium/connect:2.0   |
 
-## Using Postgres
+## Start
 
 ```shell
 # Start the topology as defined in https://debezium.io/documentation/reference/stable/tutorial.html
