@@ -1,8 +1,8 @@
-# Debezium Tutorial
+# PostgreSQL Debezium Example
 
 This demo automatically deploys the topology of services as defined in the [Debezium Tutorial](https://debezium.io/documentation/reference/stable/tutorial.html).
 
-- [Debezium Tutorial](#debezium-tutorial)
+- [PostgreSQL Debezium Example](#postgresql-debezium-example)
   - [Environment](#environment)
   - [Using Postgres](#using-postgres)
   - [Debugging](#debugging)
