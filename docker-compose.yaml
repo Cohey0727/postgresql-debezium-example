@@ -1,0 +1,64 @@
+version: "2"
+services:
+  zookeeper:
+    image: debezium/zookeeper:2.0
+    ports:
+      - 2181:2181
+      - 2888:2888
+      - 3888:3888
+
+  kafka:
+    image: debezium/kafka:2.0
+    ports:
+      - 9092:9092
+    links:
+      - zookeeper
+    environment:
+      - ZOOKEEPER_CONNECT=zookeeper:2181
+
+  # Postgres
+  postgres:
+    image: postgres:13.9
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    command: postgres -c wal_level=logical
+
+  connect:
+    image: debezium/connect:2.0
+    ports:
+      - 8083:8083
+    links:
+      - kafka
+      - postgres
+    environment:
+      - BOOTSTRAP_SERVERS=kafka:9092
+      - GROUP_ID=1
+      - CONFIG_STORAGE_TOPIC=my_connect_configs
+      - OFFSET_STORAGE_TOPIC=my_connect_offsets
+      - STATUS_STORAGE_TOPIC=my_connect_statuses
+
+  # Kafka UI
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    depends_on:
+      - kafka
+    ports:
+      - 18081:8080
+    restart: always
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=2181
+      - KAFKA_CLUSTERS_0_READONLY=false
+
+  debezium-ui:
+    image: debezium/debezium-ui:2.0
+    depends_on:
+      - connect
+    ports:
+      - 18082:8080
+    environment:
+      - KAFKA_CONNECT_URIS=http://connect:8083
